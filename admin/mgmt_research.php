@@ -86,7 +86,6 @@ if ($showstatus == 'all') {
                                 } else {
                                     include('show_status.php');
                                 }
-                                echo $menu;
                                 ?>
 
                                 
