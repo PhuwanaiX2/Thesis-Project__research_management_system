@@ -95,8 +95,8 @@ GROUP BY
                                                     <div class="card-header d-flex align-items-center justify-content-between">
                                                         <h4 class="mb-0">ข้อมูลปริญญานิพนธ์</h4>
                                                         <small class="text-muted float-end d-none d-sm-inline-block">
-                                                            <a class="btn btn-sm btn-danger"  href="javascript:history.back()"><i class='bx bxs-left-arrow'></i> ย้อนกลับ </a></small>
-                                                        <a class="btn btn-sm btn-danger d-sm-none"  href="javascript:history.back()"><i class='bx bxs-left-arrow menu-icon tf-icons'></i></a>
+                                                            <a class="btn btn-sm btn-danger" href="javascript:history.back()"><i class='bx bxs-left-arrow'></i> ย้อนกลับ </a></small>
+                                                        <a class="btn btn-sm btn-danger d-sm-none" href="javascript:history.back()"><i class='bx bxs-left-arrow menu-icon tf-icons'></i></a>
                                                     </div>
 
 
@@ -111,7 +111,7 @@ GROUP BY
                                                             </dd>
 
                                                             <dt class="col-sm-3 text-truncate">บทคัดย่อ</dt>
-                                                            <dd class="col-sm-9 lead">
+                                                            <dd class="col-sm-9 lead" style="text-align: justify;  text-justify: distribute-all-lines;">
                                                                 <?php echo $row['thesis_des'] ?>
                                                             </dd>
 
