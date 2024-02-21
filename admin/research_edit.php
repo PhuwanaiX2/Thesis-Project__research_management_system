@@ -72,7 +72,7 @@
 
                             <div class="col mb-1">
                                 <label class="form-label" for="formValidationBio">บทคัดย่อ</label>
-                                <textarea class="form-control summernote" id="formValidationBio" name="thesis_des" rows="3">
+                                <textarea class="form-control" id="formValidationBio" name="thesis_des" rows="3">
                                         <?php echo $row['thesis_des'] ?>
                                       </textarea>
                             </div>
