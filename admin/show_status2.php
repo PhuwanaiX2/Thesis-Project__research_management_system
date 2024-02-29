@@ -23,6 +23,7 @@
                                                     thesis.thesis_view,
                                                     thesis.thesis_status,
                                                     thesis.thesis_file,
+                                                    thesis.thesis_reason,
                                                     type_thesis.typethesis_id,
                                                     type_thesis.typethesis_name,
                                                     Advisor.Advisor_id,                
@@ -56,6 +57,7 @@
                 <tr class="info">
                     <th width="5%">#</th>
                     <th>ชื่อประเภทปริญญานิพนธ์</th>
+                    <th>เหตุผลที่ไม่อนุมัติปริญญานิพนธ์</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,9 +66,8 @@
                 while ($row_result2 = mysqli_fetch_assoc($result2)) { ?>
                     <tr>
                         <td><?php echo $i++ ?></td>
-                        <td>
-                           <?php echo $row_result2["thesis_name1"] ?>
-                        </td>                        
+                        <td><?php echo $row_result2["thesis_name1"] ?></td>                        
+                        <td><?php echo $row_result2["thesis_reason"] ?></td>                        
                     </tr>
                     <?php include('./edit_modal.php'); ?>
 
@@ -77,6 +78,7 @@
                 <tr class="info">
                     <th>#</th>
                     <th>ชื่อประเภทปริญญานิพนธ์</th>
+                    <th>เหตุผลที่ไม่อนุมัติปริญญานิพนธ์</th>
                 </tr>
             </tfoot>
         </table>

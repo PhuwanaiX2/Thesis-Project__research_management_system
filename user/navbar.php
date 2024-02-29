@@ -80,7 +80,7 @@
                     <li>
                         <a class="dropdown-item" onclick="logout()">
                             <i class="bx bx-power-off me-2"></i>
-                            <span class="align-middle">Log Out</span>
+                            <span class="align-middle">ออกจากระบบ</span>
                         </a>
                     </li>
                 </ul>

@@ -35,15 +35,15 @@
 <script src="../js/registerandlog.js"></script> <!-- LOGIN-->
 <!-- <script src="../js/text.js"></script> LOGIN -->
 <!-- multiselect and Delete -->
-<script src="../js/delete_multiselect.js"></script> 
+<script src="../js/delete_multiselect.js"></script>
 <script src="../js/type_research.js"></script> <!--type_research-->
 <script src="../js/news.js"></script> <!--type_research-->
-<script src="../js/thesis.js"></script> 
+<script src="../js/thesis.js"></script>
 <!-- <script src="../js/ayo.js"></script>  -->
-<script src="../js/members.js"></script> 
-<script src="../js/prefix.js"></script> 
-<script src="../js/branch.js"></script> 
-<script src="../js/faculty.js"></script> 
+<script src="../js/members.js"></script>
+<script src="../js/prefix.js"></script>
+<script src="../js/branch.js"></script>
+<script src="../js/faculty.js"></script>
 
 
 
@@ -60,8 +60,7 @@
 
 
 <script>
-  
-    $('.summernote').summernote({
+  $('.summernote').summernote({
     height: 300,
     pastePlain: true,
     disableFileUpload: true, // ปิดการอัพโหลดไฟล์
@@ -86,7 +85,6 @@
       ['insert', ['link', 'picture']]
     ]
   });
-  
 </script>
 
 <!-- datatable -->
@@ -131,30 +129,35 @@
 
 
 <script>
-    function logout() {
-        Swal.fire({
-            title: "คุณแน่ใจใช่ไหม?",
-            text: "คุณต้องการที่จะออกจากระบบใช่ไหม?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            cancelButtonText: "ยกเลิก",
-            confirmButtonText: "ใช่"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Make an AJAX request to the logout.php file
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "../inc/logout.php", true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // Redirect or perform any other client-side actions after logout
-                        window.location.href = "../login.php"; // Redirect to login page, for example
-                    }
-                };
-                xhr.send();
-            }
-        });
-    }
+  function logout() {
+    Swal.fire({
+      title: "คุณแน่ใจใช่ไหม?",
+      text: "คุณต้องการที่จะออกจากระบบใช่ไหม?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "ยกเลิก",
+      confirmButtonText: "ใช่"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Make an AJAX request to the logout.php file
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../inc/logout.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            // Redirect or perform any other client-side actions after logout
+            window.location.href = "../login.php"; // Redirect to login page, for example
+          }
+        };
+        xhr.send();
+      }
+    });
+  }
 </script>
+
+
+
+
+

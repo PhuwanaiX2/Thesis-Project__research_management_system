@@ -45,21 +45,15 @@
                                     <label class="form-label" for="formValidationPass">รหัสผ่านเก่า</label>
                                     <div class="input-group input-group-merge">
                                         <input class="form-control" type="password" id="formValidationPass" name="password_old" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="multicol-password2" required />
-
                                         <span class="input-group-text cursor-pointer" id="multicol-password2"><i class="bx bx-hide"></i></span>
-
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                         <div class="text-end">
                             <button type="submit" class="btn btn-primary me-2" name="change_password">บันทึก</button>
                         </div>
             <?php
-
                     }
                 }
             }

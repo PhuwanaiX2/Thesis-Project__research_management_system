@@ -72,14 +72,11 @@
                         <td><input type="checkbox" class="checkbox form-check-input" data-ids="<?php echo $row_result2["thesis_id"]; ?>"></td>
                         <td><?php echo $i++ ?></td>
                         <td>
-                            <?php echo $row_result2["thesis_name1"]  ?>
-                            
+                            <a href="../thesis_detail.php?id=<?php echo $row_result2["thesis_id"]; ?>"><?php echo $row_result2["thesis_name1"]  ?></a>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
-                            <a type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#duresearch<?php echo $row_result2['thesis_id']; ?>">
-                            <i class='bx bxs-file-find text-white'></i>
-                            </a>
+                            
                                 <a type="button" class="btn btn-warning" href="mgmt_research.php?showstatus=edit&id=<?php echo $row_result2['thesis_id']; ?>">
                                     <i class="bx bx-edit-alt"></i>
                                 </a>
@@ -89,7 +86,6 @@
                             </div>
                         </td>
                     </tr>
-                    <?php include('./edit_modal.php'); ?>
 
                 <?php } ?>
             </tbody>

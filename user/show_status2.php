@@ -23,6 +23,7 @@
                                              thesis.thesis_view,
                                              thesis.thesis_status,
                                              thesis.thesis_file,
+                                             thesis.thesis_reason,
                                              type_thesis.typethesis_id,
                                              type_thesis.typethesis_name,
                                              Advisor.Advisor_id,                
@@ -52,6 +53,7 @@
                 <tr class="info">
                     <th width="5%">#</th>
                     <th>ชื่อประเภทปริญญานิพนธ์</th>
+                    <th>เหตุผลที่ไม่อนุมัติปริญญานิพนธ์</th>
                     <th width="5%">action</th>
                 </tr>
             </thead>
@@ -63,6 +65,9 @@
                         <td><?php echo $i++ ?></td>
                         <td>
                             <?php echo $row_result2["thesis_name1"]  ?>
+                        </td>
+                        <td>
+                            <?php echo $row_result2["thesis_reason"]  ?>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
@@ -83,6 +88,7 @@
                 <tr class="info">
                     <th>#</th>
                     <th>ชื่อประเภทปริญญานิพนธ์</th>
+                    <th>เหตุผลที่ไม่อนุมัติปริญญานิพนธ์</th>
                     <th>action</th>
 
                 </tr>

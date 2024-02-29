@@ -1,4 +1,4 @@
-$(".add_item_btn").click(function(e) {
+$(".add_item_btn").click(function (e) {
     e.preventDefault();
 
     $("#show_item").append(`
@@ -19,14 +19,14 @@ placeholder="นามสกุล" >
 `)
 });
 
-$(document).on('click', '.remove_item_btn', function(e) {
+$(document).on('click', '.remove_item_btn', function (e) {
     e.preventDefault();
     let row_item = $(this).parent().parent();
     $(row_item).remove();
 });
 
 
-$("#add_research").submit(function(e) {
+$("#add_research").submit(function (e) {
     e.preventDefault();
     let formUrl = $(this).attr("action");
     let reqMethod = $(this).attr("method");
@@ -42,13 +42,13 @@ $("#add_research").submit(function(e) {
         dataType: 'json',
         contentType: false,
         processData: false,
-        success: function(data) {
+        success: function (data) {
             if (data.status === "success") {
                 Swal.fire({
                     icon: 'success',
                     title: 'สำเร็จ',
                     text: data.msg
-                }).then(function() {
+                }).then(function () {
                     window.location.href = "mgmt_research.php";
                 });
             } else {
@@ -63,7 +63,7 @@ $("#add_research").submit(function(e) {
 });
 
 
-$(".edit-form-research").submit(function(e) {
+$(".edit-form-research").submit(function (e) {
     e.preventDefault();
     let formUrl = $(this).attr("action");
     let reqMethod = $(this).attr("method");
@@ -78,13 +78,13 @@ $(".edit-form-research").submit(function(e) {
         dataType: 'json',
         contentType: false,
         processData: false,
-        success: function(data) {
+        success: function (data) {
             if (data.status == "success") {
                 Swal.fire({
                     icon: 'success',
                     title: 'สำเร็จ',
                     text: data.msg
-                }).then(function() {
+                }).then(function () {
                     window.location.href = "mgmt_research.php";
                 });
             } else {
@@ -98,7 +98,7 @@ $(".edit-form-research").submit(function(e) {
     });
 });
 
-$(".edit-form-con").submit(function(e) {
+$(".edit-form-con").submit(function (e) {
     e.preventDefault();
     let formUrl = $(this).attr("action");
     let reqMethod = $(this).attr("method");
@@ -107,28 +107,28 @@ $(".edit-form-con").submit(function(e) {
     formData.append($(document.activeElement).attr('consider'), $(document.activeElement).val());
     formData.append('consider', $(document.activeElement).val());
     $.ajax({
-      url: formUrl,
-      type: reqMethod,
-      data: formData,
-      dataType: 'json',
-      contentType: false,
-      processData: false,
-      success: function(data) {
-        if (data.status == "success") {
-          Swal.fire({
-            icon: 'success',
-            title: 'สำเร็จ',
-            text: data.msg
-          }).then(function() {
-            window.location.href = "mgmt_research.php";
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'ล้มเหลว',
-            text: data.msg
-          });
+        url: formUrl,
+        type: reqMethod,
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            if (data.status == "success") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ',
+                    text: data.msg
+                }).then(function () {
+                    window.location.href = "mgmt_research.php";
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ล้มเหลว',
+                    text: data.msg
+                });
+            }
         }
-      }
     });
-  });
+});

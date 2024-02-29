@@ -17,12 +17,11 @@ if (isset($_POST['delete'])) {
         mysqli_stmt_bind_param($stmt_del_author, "i", $delete_id);
         $result_del_author = mysqli_stmt_execute($stmt_del_author);
 
-        if ($result_del_author){
+        if ($result_del_author) {
             echo json_encode(array("status" => "success", "msg" => "ลบข้อมูลสำเร็จ"));
-        }else{
+        } else {
             echo json_encode(array("status" => "error", "msg" => "ไม่สามารถลบข้อมูลได้"));
         }
-
     } else {
         echo json_encode(array("status" => "error", "msg" => "ไม่สามารถลบข้อมูลได้"));
     }
@@ -43,8 +42,8 @@ if (isset($_POST['ids'])) {
 
         if ($stmt) {
             // Bind parameters
-            $types = str_repeat('i', count($idsArray)); 
-            mysqli_stmt_bind_param($stmt, $types, ...$idsArray); 
+            $types = str_repeat('i', count($idsArray));
+            mysqli_stmt_bind_param($stmt, $types, ...$idsArray);
             $result = mysqli_stmt_execute($stmt);
 
             if ($result) {
@@ -53,12 +52,12 @@ if (isset($_POST['ids'])) {
                 $stmt_del_author = mysqli_prepare($conn, $del_author);
 
                 // Bind parameters
-                mysqli_stmt_bind_param($stmt_del_author, $types, ...$idsArray); 
+                mysqli_stmt_bind_param($stmt_del_author, $types, ...$idsArray);
 
                 // ประมวลผลคำสั่ง SQL
                 $result_del_author = mysqli_stmt_execute($stmt_del_author);
 
-                if ($result_del_author){
+                if ($result_del_author) {
                     echo json_encode(array("status" => "success", "msg" => "ลบข้อมูลสำเร็จ"));
                 } else {
                     echo json_encode(array("status" => "error", "msg" => "ไม่สามารถลบข้อมูลได้"));
@@ -254,9 +253,9 @@ if (isset($_POST['edit_research'])) {
                 // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
                 $conn->begin_transaction(); // เริ่ม transaction
                 //บันทึกข้อมูล ปริญญานิพนธ์
-                $updateQuery = "UPDATE thesis SET thesis_name1 = ?, thesis_name2 = ?, thesis_des = ?, thesis_keyword = ?, thesis_year = ?, thesis_status = ?, typethesis_id = ? , Advisor_id = ? , faculty_id = ? , branch_id = ?, thesis_file = ? WHERE thesis_id = ?";
+                $updateQuery = "UPDATE thesis SET thesis_name1 = ?, thesis_name2 = ?, thesis_des = ?, thesis_keyword = ?, thesis_year = ?, thesis_status = ?, typethesis_id = ? , Advisor_id = ? , faculty_id = ? , branch_id = ?  WHERE thesis_id = ?";
                 $updateStmt = mysqli_prepare($conn, $updateQuery);
-                mysqli_stmt_bind_param($updateStmt, "ssssssiiiisi", $thesis_name1, $thesis_name2, $thesis_des, $thesis_keyword, $thesis_year, $thesis_status, $typethesis_id, $advisor_id, $faculty_id, $branch_id, $newname1, $thesis_id);
+                mysqli_stmt_bind_param($updateStmt, "ssssssiiiii", $thesis_name1, $thesis_name2, $thesis_des, $thesis_keyword, $thesis_year, $thesis_status, $typethesis_id, $advisor_id, $faculty_id, $branch_id,  $thesis_id);
 
                 if (mysqli_stmt_execute($updateStmt) === TRUE) {
 
@@ -293,18 +292,26 @@ if (isset($_POST['consider'])) {
 
     if ($status == 'consider1') {
         $consider = '1';
+        // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
+        $updateQuery = "UPDATE thesis SET thesis_status = ? WHERE thesis_id = ?";
+        $updateStmt = mysqli_prepare($conn, $updateQuery);
+        mysqli_stmt_bind_param($updateStmt, "si", $consider, $thesis_id);
+        mysqli_stmt_execute($updateStmt);
+        echo json_encode(array("status" => "success", "msg" => "ตรวจสอบสำเร็จ"));
+        mysqli_stmt_close($updateStmt);
     } elseif ($status == 'consider2') {
         $consider = '2';
+        $thesis_reason = $_POST['thesis_reason'];
+
+        // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
+        $updateQuery = "UPDATE thesis SET thesis_status = ?,thesis_reason = ? WHERE thesis_id = ?";
+        $updateStmt = mysqli_prepare($conn, $updateQuery);
+        mysqli_stmt_bind_param($updateStmt, "ssi", $consider,$thesis_reason, $thesis_id);
+        mysqli_stmt_execute($updateStmt);
+        echo json_encode(array("status" => "success", "msg" => "ตรวจสอบสำเร็จ"));
+        mysqli_stmt_close($updateStmt);
     } else {
         echo json_encode(array("status" => "error", "msg" => "ค่าสถานะไม่ถูกต้อง"));
         exit;
     }
-
-    // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
-    $updateQuery = "UPDATE thesis SET thesis_status = ? WHERE thesis_id = ?";
-    $updateStmt = mysqli_prepare($conn, $updateQuery);
-    mysqli_stmt_bind_param($updateStmt, "si", $consider, $thesis_id);
-    mysqli_stmt_execute($updateStmt);
-    echo json_encode(array("status" => "success", "msg" => "ตรวจสอบสำเร็จ"));
-    mysqli_stmt_close($updateStmt);
 }

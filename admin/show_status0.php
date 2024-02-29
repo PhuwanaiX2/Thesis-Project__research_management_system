@@ -1,4 +1,3 @@
-
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
         <h4 class="mb-0">ปริญญานิพนธ์ที่รอยืนยัน</h4>
@@ -6,7 +5,7 @@
             <a class="btn btn-success" href="mgmt_research.php?showstatus=add"><i class='bx bxs-plus-square'></i> เพิ่มข้อมูล </a>
         </div>
         <div class="btn-group-sm btn-group d-sm-none" role="group" aria-label="Basic example">
-        <a class="btn btn-success" href="mgmt_research.php?showstatus=add"><i class='bx bxs-plus-square'></i> </a>           
+            <a class="btn btn-success" href="mgmt_research.php?showstatus=add"><i class='bx bxs-plus-square'></i> </a>
         </div>
     </div>
     <div class="card-body">
@@ -60,13 +59,14 @@
                 while ($row_result2 = mysqli_fetch_assoc($result2)) { ?>
                     <tr>
                         <td><?php echo $i++ ?></td>
-                        <td><?php echo $row_result2["thesis_name1"]?></td>
+                        <td><?php echo $row_result2["thesis_name1"] ?></td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#consider<?php echo $row_result2['thesis_id']; ?>">
 
+                                <a type="button" class="btn btn-info" href="mgmt_research.php?showstatus=consider&id=<?php echo $row_result2['thesis_id']; ?>">
                                     <i class='bx bxs-file-find bx-flashing'></i>
-                                </button>
+                                </a>
+
                             </div>
                         </td>
                     </tr>

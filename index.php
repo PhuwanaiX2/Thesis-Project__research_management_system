@@ -229,7 +229,7 @@ $result_search = mysqli_query($conn, $sql_search);
                                 $selected = ($row2["Advisor_id"] == $_REQUEST["advisor"]) ? "selected" : "";
                             ?>
                                 <option value="<?php echo $row2["Advisor_id"]; ?>" <?php echo $selected; ?>>
-                                  <?php echo "อาจารย์ ",$row2["prefix_name"] . "" . $row2["Advisor_name1"] . " " . $row2["Advisor_name2"]; ?>
+                                  <?php echo "อาจารย์ ", $row2["prefix_name"] . "" . $row2["Advisor_name1"] . " " . $row2["Advisor_name2"]; ?>
                                 </option>
                             <?php
                               }
@@ -240,21 +240,16 @@ $result_search = mysqli_query($conn, $sql_search);
 
                         <div class="col-lg-3 col-sm-12 mb-3">
                           <label class="form-label" for="inputGroupSelect01">คณะ</label>
-                          <select name="faculty" class="form-select">
+                          <select name="faculty" id="faculty" class="form-select">
                             <option selected value="">เลือกทั้งหมด</option>
                             <?php
-                            // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง type_thesis
                             $sql_faculty = "SELECT faculty_id, faculty_name FROM faculty";
                             $result_faculty = $conn->query($sql_faculty);
 
                             if ($result_faculty->num_rows > 0) {
                               while ($row_faculty = $result_faculty->fetch_assoc()) {
                                 $selected = ($row_faculty["faculty_id"] == $_REQUEST["faculty"]) ? "selected" : "";
-                            ?>
-                                <option value="<?php echo $row_faculty["faculty_id"]; ?>" <?php echo $selected; ?>>
-                                  คณะ<?php echo $row_faculty["faculty_name"] ?>
-                                </option>
-                            <?php
+                                echo "<option value='{$row_faculty["faculty_id"]}' $selected>{$row_faculty["faculty_name"]}</option>";
                               }
                             }
                             ?>
@@ -263,26 +258,24 @@ $result_search = mysqli_query($conn, $sql_search);
 
                         <div class="col-lg-3 col-sm-12 mb-3">
                           <label class="form-label" for="inputGroupSelect01">สาขาวิชา</label>
-                          <select name="branch" class="form-select">
-                            <option selected value="">เลือกทั้งหมด</option>
+                          <select name="branch" id="branch" class="form-select">
+                            <option value="">เลือกทั้งหมด</option>
                             <?php
-                            // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง type_thesis
+                            // โค้ด PHP เพื่อเลือกตัวเลือกสาขาที่ถูกเลือกไว้ก่อนหน้า
+                            $selectedBranchId = $_REQUEST['branch'];
                             $sql_branch = "SELECT branch_id, branch_name FROM branch";
                             $result_branch = $conn->query($sql_branch);
 
                             if ($result_branch->num_rows > 0) {
                               while ($row_branch = $result_branch->fetch_assoc()) {
-                                $selected = ($row_branch["branch_id"] == $_REQUEST["branch"]) ? "selected" : "";
-                            ?>
-                                <option value="<?php echo $row_branch["branch_id"]; ?>" <?php echo $selected; ?>>
-                                  สาขาวิชา<?php echo $row_branch["branch_name"] ?>
-                                </option>
-                            <?php
+                                $selected = ($row_branch["branch_id"] == $selectedBranchId) ? "selected" : "";
+                                echo "<option value='{$row_branch["branch_id"]}' $selected>{$row_branch["branch_name"]}</option>";
                               }
                             }
                             ?>
                           </select>
                         </div>
+
 
                       </div>
                       <div class="text-end">

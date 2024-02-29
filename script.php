@@ -90,3 +90,51 @@ $(document).ready(function() {
         });
     }
 </script>
+
+<script>
+    $(document).ready(function() {
+      // เมื่อเลือกคณะ
+      $('#faculty').change(function() {
+        var facultyId = $(this).val();
+        // โหลดข้อมูลสาขาของคณะนั้นๆ
+        loadBranches(facultyId);
+      });
+
+      // เมื่อโหลดหน้าเว็บเริ่มต้นให้โหลดสาขาที่เกี่ยวข้องกับคณะที่ถูกเลือก (ถ้ามี)
+      $('#faculty').trigger('change');
+
+      // เมื่อเลือกสาขา
+      $('#branch').change(function() {
+        var selectedBranch = $(this).val();
+        // ถ้าเลือกสาขาที่ไม่ใช่ "เลือกทั้งหมด" ให้แสดงสาขานั้น
+        if (selectedBranch !== '') {
+          $('#branch option[value=""]').removeAttr('selected');
+          $('#branch option[value="' + selectedBranch + '"]').attr('selected', 'selected');
+        }
+      });
+
+      // ฟังก์ชันโหลดข้อมูลสาขาของคณะ
+      function loadBranches(facultyId) {
+        // โหลดข้อมูลสาขาของคณะที่ถูกเลือก
+        $.ajax({
+          url: './inc/fetch_branches.php',
+          type: 'post',
+          data: {
+            faculty_id: facultyId,
+            selected_branch: $('#branch').val()
+          }, // ส่งค่าสาขาที่ถูกเลือกไว้ก่อนหน้า
+          dataType: 'json',
+          success: function(response) {
+            var len = response.branches.length;
+            $('#branch').empty().append("<option value=''>เลือกทั้งหมด</option>");
+            for (var i = 0; i < len; i++) {
+              var branchId = response.branches[i]['branch_id'];
+              var branchName = response.branches[i]['branch_name'];
+              var selected = (branchId == response.selected_branch) ? "selected" : "";
+              $('#branch').append("<option value='" + branchId + "' " + selected + ">" + branchName + "</option>");
+            }
+          }
+        });
+      }
+    });
+  </script>

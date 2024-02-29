@@ -88,7 +88,6 @@
                             </p>
                         </td>
                     </tr>
-                    <?php include('./edit_modal.php'); ?>
 
 
                 <?php } ?>

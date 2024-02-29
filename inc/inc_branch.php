@@ -69,10 +69,13 @@ if (isset($_POST['ids'])) {
 
 //เพิ่มประเภทปริญญานิพนธ์
 if (isset($_POST['add_branch'])) {
-    $typename = $_POST['branch_name'];
+
+    $branch_name = $_POST['branch_name'];
+    $faculty_id = $_POST["faculty"];
+
     $checkDuplicateSql = "SELECT * FROM branch WHERE branch_name = ?";
     $checkStmt = mysqli_prepare($conn, $checkDuplicateSql);
-    mysqli_stmt_bind_param($checkStmt, "s", $typename);
+    mysqli_stmt_bind_param($checkStmt, "s", $branch_name);
     mysqli_stmt_execute($checkStmt);
     mysqli_stmt_store_result($checkStmt);
 
@@ -81,9 +84,9 @@ if (isset($_POST['add_branch'])) {
         echo json_encode(array("status" => "error", "msg" => "ข้อมูลนี้มีอยู่แล้ว"));
     } else {
         // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
-        $insertQuery = "INSERT INTO branch (branch_name) VALUES (?)";
+        $insertQuery = "INSERT INTO branch (branch_name, faculty_id) VALUES (?,?)";
         $insertStmt = mysqli_prepare($conn, $insertQuery);
-        mysqli_stmt_bind_param($insertStmt, "s", $typename);
+        mysqli_stmt_bind_param($insertStmt, "si", $branch_name ,$faculty_id);
         mysqli_stmt_execute($insertStmt);
         echo json_encode(array("status" => "success", "msg" => "เพิ่มสำเร็จ"));
     }
@@ -94,12 +97,13 @@ if (isset($_POST['add_branch'])) {
 
 // แก้ไขประเภทปริญญานิพนธ์
 if (isset($_POST['edit_branch'])) {
-    $thesis_id = $_POST["branch_id"];
-    $thesis_type_name = $_POST["branch_name"];
+    $branch_id = $_POST["branch_id"];
+    $branch_name = $_POST["branch_name"];
+    $faculty_id = $_POST["faculty"];
 
     $checkDuplicateSql = "SELECT * FROM branch WHERE branch_name = ?  AND branch_id != ?";
     $checkStmt = mysqli_prepare($conn, $checkDuplicateSql);
-    mysqli_stmt_bind_param($checkStmt, "si", $thesis_type_name, $thesis_id);
+    mysqli_stmt_bind_param($checkStmt, "si", $branch_name, $branch_id);
     mysqli_stmt_execute($checkStmt);
     mysqli_stmt_store_result($checkStmt);
 
@@ -108,9 +112,9 @@ if (isset($_POST['edit_branch'])) {
         echo json_encode(array("status" => "error", "msg" => "ข้อมูลนี้มีอยู่แล้ว"));
     } else {
         // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
-        $updateQuery = "UPDATE branch SET branch_name = ? WHERE branch_id = ?";
+        $updateQuery = "UPDATE branch SET branch_name = ?, faculty_id = ? WHERE branch_id = ?";
         $updateStmt = mysqli_prepare($conn, $updateQuery);
-        mysqli_stmt_bind_param($updateStmt, "si", $thesis_type_name, $thesis_id);
+        mysqli_stmt_bind_param($updateStmt, "sii", $branch_name, $faculty_id, $branch_id);
         mysqli_stmt_execute($updateStmt);
         echo json_encode(array("status" => "success", "msg" => "แก้ไขสำเร็จ"));
     }

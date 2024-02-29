@@ -4,11 +4,11 @@
     <div class="card-header d-flex align-items-center justify-content-between">
         <h4 class="mb-0">เพิ่มปริญญานิพนธ์</h4>
         <div class="text-muted float-end d-none d-sm-inline-block btn-group-sm btn-group" role="group" aria-label="Basic example">
-        <a class="btn btn-danger"  href="javascript:history.back()"><i class='bx bxs-left-arrow'></i> ย้อนกลับ </a>
-       
+            <a class="btn btn-danger" href="javascript:history.back()"><i class='bx bxs-left-arrow'></i> ย้อนกลับ </a>
+
         </div>
         <div class="btn-group-sm btn-group d-sm-none" role="group" aria-label="Basic example">
-            <a class="btn btn-danger"  href="javascript:history.back()"><i class='bx bxs-left-arrow'></i></a>
+            <a class="btn btn-danger" href="javascript:history.back()"><i class='bx bxs-left-arrow'></i></a>
         </div>
     </div>
 
@@ -80,40 +80,20 @@
 
                 <div class="row mb-3">
 
+
                     <div class="col-md-6">
                         <label for="exampleFormControlTextarea1" class="form-label">คณะ</label>
-                        <select id="faculty_id" name="faculty_id" class="form-select" required>
-                            <?php
-                            // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง faculty
-                            $sql = "SELECT faculty_id, faculty_name FROM faculty";
-                            $result = $conn->query($sql);
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row["faculty_id"] . '">' . $row["faculty_name"] . '</option>';
-                                }
-                            }
-                            ?>
+                        <select id="faculty_add" name="faculty_id"  class="form-select" required>
+                            <option value="">เลือกคณะ</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="exampleFormControlTextarea1" class="form-label">สาขาวิชา</label>
-                        <select id="branch_id" name="branch_id" class="form-select" required>
-                            <?php
-                            // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง branch
-                            $sql = "SELECT branch_id, branch_name FROM branch";
-                            $result = $conn->query($sql);
-
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row["branch_id"] . '">' . $row["branch_name"] . '</option>';
-                                }
-                            }
-                            ?>
+                        <select id="branch_add" name="branch_id"  class="form-select" required>
+                            <option value="">เลือกสาขา</option>
                         </select>
                     </div>
-
-
                 </div>
 
                 <div class="col mb-3">
@@ -138,7 +118,7 @@
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row["Advisor_id"] . '">'.$row["prefix_name"]."". $row["Advisor_name1"] . "  " . $row["Advisor_name2"] . '</option>';
+                                    echo '<option value="' . $row["Advisor_id"] . '">' . $row["prefix_name"] . "" . $row["Advisor_name1"] . "  " . $row["Advisor_name2"] . '</option>';
                                 }
                             }
                             ?>
@@ -191,3 +171,45 @@
         </form>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // เมื่อหน้าเว็บโหลดเสร็จ
+        loadFaculties();
+
+        // เมื่อเลือกคณะ
+        $('#faculty_add').change(function() {
+            var facultyId = $(this).val();
+            if (facultyId) {
+                loadBranches(facultyId);
+            } else {
+                $('#branch_add').html('<option value="">เลือกสาขา</option>');
+            }
+        });
+    });
+
+    // ฟังก์ชันสำหรับโหลดคณะ
+    function loadFaculties() {
+        $.ajax({
+            url: '../inc/get_faculties.php',
+            type: 'post',
+            success: function(response) {
+                $('#faculty_add').html(response);
+            }
+        });
+    }
+
+    // ฟังก์ชันสำหรับโหลดสาขาตามคณะที่เลือก
+    function loadBranches(facultyId) {
+        $.ajax({
+            url: '../inc/get_branches.php',
+            type: 'post',
+            data: {
+                faculty_id: facultyId
+            },
+            success: function(response) {
+                $('#branch_add').html(response);
+            }
+        });
+    }
+</script>

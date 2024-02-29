@@ -71,24 +71,23 @@ if ($showstatus == 'all') {
 
                                     include('show_status1.php');
                                 } elseif ($showstatus == 'notconfirm') {
-
                                     include('show_status2.php');
                                     $menu = "research_notconfirm";
-
                                 }
                                 elseif ($showstatus == 'add') {
-
                                     include('research_add.php');
                                 }
                                 elseif ($showstatus == 'edit') {
-
                                     include('research_edit.php');
-                                } else {
+                                }elseif ($showstatus == 'consider') {
+                                    include('research_consider.php');
+                                }
+                                 else {
                                     include('show_status.php');
                                 }
                                 ?>
 
-                                
+
                             </div>
                         </div>
 
@@ -104,7 +103,21 @@ if ($showstatus == 'all') {
         <?php
         include('./script.php');
         ?>
-
+<script>
+    $(document).ready(function(){
+        $('#faculty_id').change(function(){
+            var faculty_id = $(this).val();
+            $.ajax({
+                type:'POST',
+                url:'../inc/get_branch.php',
+                data:{faculty_id:faculty_id},
+                success:function(response){
+                    $('#branch_id').html(response);
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

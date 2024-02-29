@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
         <?php
-        $sql_script2 = "SELECT * FROM branch";
+        $sql_script2 = "SELECT * FROM branch left join faculty on faculty.faculty_id=branch.faculty_id";
         $result2 = mysqli_query($conn, $sql_script2) or die(mysqli_connect_error());
         ?>
         <table id="myTable" class="table table-striped">
@@ -23,17 +23,19 @@
                         <input type="checkbox" id="select_all" class="form-check-input">
                     </th>
                     <th width="5%">#</th>
+                    <th width="5%">ชื่อคณะ</th>
                     <th>ชื่อสาขาวิชา</th>
                     <th width="5%">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $i =1;
+                $i = 1;
                 while ($row_result2 = mysqli_fetch_assoc($result2)) { ?>
                     <tr>
                         <td><input type="checkbox" class="checkbox form-check-input" data-ids="<?php echo $row_result2["branch_id"]; ?>"></td>
                         <td><?php echo $i++ ?></td>
+                        <td><?php echo $row_result2["faculty_name"] ?> </td>
                         <td><?php echo $row_result2["branch_name"] ?> </td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
@@ -54,6 +56,7 @@
                 <tr class="info">
                     <th width="5%">#</th>
                     <th width="5%">#</th>
+                    <th>ชื่อคณะ</th>
                     <th>ชื่อสาขาวิชา</th>
                     <th width="5%">Actions</th>
                 </tr>
@@ -73,8 +76,27 @@
             </div>
             <form action="../inc/inc_branch.php" method="post" id="add_branch">
                 <div class="modal-body">
-                    <label for="">ชื่อสาขาวิชา </label>
-                    <input type="text" class="form-control mb-3" name="branch_name">
+
+                    <div class="col mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">เลือกคณะ</label>
+                        <select id="m_id" name="faculty" class="form-select" required>
+                            <?php
+                            // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง type_thesis
+                            $sql = "SELECT * FROM faculty ";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . $row["faculty_id"] . '">' . $row["faculty_name"] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="col mb-3">
+                        <label for="">ชื่อสาขาวิชา </label>
+                        <input type="text" class="form-control mb-3" name="branch_name">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
