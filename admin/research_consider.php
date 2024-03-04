@@ -37,7 +37,7 @@ prefix_author.prefix_id AS author_prefix_id,
 prefix_author.prefix_name AS author_prefix_name,
 COUNT(author.author_id) AS num_authors,
 GROUP_CONCAT( CONCAT(prefix_author.prefix_name,author.author_name1, ' ', author.author_name2) SEPARATOR ' / ') AS author_full_names,
-CONCAT('อาจารย์ ', prefix_advisor.prefix_name, Advisor.Advisor_name1, ' ', Advisor.Advisor_name2) AS Advisor_full_name,
+CONCAT('ที่ปรึกษา ', prefix_advisor.prefix_name, Advisor.Advisor_name1, ' ', Advisor.Advisor_name2) AS Advisor_full_name,
 CONCAT(faculty.faculty_name, ' ', branch.branch_name) AS Agency
 FROM 
 thesis      
@@ -68,11 +68,7 @@ thesis.thesis_id";
                 if (mysqli_num_rows($result) > 0) {
 
                     $row = mysqli_fetch_assoc($result);
-
-
         ?>
-
-
 
                     <div class="modal-body">
 

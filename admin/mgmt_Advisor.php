@@ -23,74 +23,77 @@ $menu = "Advisor";
                             <div class="row">
                                 <!-- FormValidation -->
                                 <div class="col-12">
-                                    <div class="card">
-                                  
+                                <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="mb-0">ที่ปรึกษาปริญญานิพนธ์</h4>
+        <div class="text-muted float-end d-none d-sm-inline-block btn-group-sm btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bxs-plus-square'></i>เพิ่มข้อมูล</button>
+            <button type="button" class="btn btn-danger delete_multi_advisor"><i class='bx bxs-trash'></i> ลบข้อมูล</button>
+        </div>
+        <div class="btn-group-sm btn-group d-sm-none" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bxs-plus-square'></i></button>
+            <button type="button" class="btn btn-danger delete_multi_advisor"><i class='bx bxs-trash'></i></button>
+        </div>
+    </div>
 
-                                        <div class="card-header d-flex align-items-center justify-content-between">
-                                            <h4 class="mb-0">ที่ปรึกษาปริญญานิพนธ์</h4>
-                                            <div class="text-muted float-end d-none d-sm-inline-block btn-group-sm btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bxs-plus-square'></i>เพิ่มข้อมูล</button>
-                                                <button type="button" class="btn btn-danger delete_multi_advisor"><i class='bx bxs-trash'></i> ลบข้อมูล</button>
-                                            </div>
-                                            <div class="btn-group-sm btn-group d-sm-none" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bxs-plus-square'></i></button>
-                                                <button type="button" class="btn btn-danger delete_multi_advisor"><i class='bx bxs-trash'></i></button>
-                                            </div>
-                                        </div>
-
-                                        <div class="card-body">
-                                            <?php
-                                            $sql_script2 = "SELECT Advisor.*,prefix.* FROM Advisor
-                                            LEFT join prefix ON prefix.prefix_id = advisor.prefix_id";
-                                            $result2 = mysqli_query($conn, $sql_script2) or die(mysqli_connect_error());
-                                            $i = 1;
-                                            ?>
-                                            <table id="myTable" class="table table-striped">
-                                                <thead>
-                                                    <tr class="info">
-                                                        <th width="5%">
-                                                            <input type="checkbox" id="select_all" class="form-check-input">
-                                                        </th>
-                                                        <th width="5%">#</th>
-                                                        <th>ชื่อ</th>
-                                                        <th width="5%">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $i = 1;
-                                                    while ($row_result2 = mysqli_fetch_assoc($result2)) { ?>
-                                                        <tr>
-                                                            <td><input type="checkbox" class="checkbox form-check-input" data-ids="<?php echo $row_result2["Advisor_id"]; ?>"></td>
-                                                            <td><?php echo $i++ ?></td>
-                                                            <td><?php echo $row_result2["prefix_name"] . "" . $row_result2["Advisor_name1"] . "  " . $row_result2["Advisor_name2"] ?> </td>
-                                                            <td>
-                                                                <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
-                                                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit_Advisor<?php echo $row_result2['Advisor_id'] ?>">
+    <div class="card-body">
+        <?php
+        $sql_script2 = "SELECT Advisor.Advisor_id,prefix.prefix_name,Advisor.Advisor_name1, Advisor.Advisor_name2,faculty.faculty_name,branch.branch_name,Advisor.prefix_id,Advisor.faculty_id,Advisor.branch_id FROM advisor LEFT join prefix ON prefix.prefix_id = advisor.prefix_id LEFT join faculty ON faculty.faculty_id = advisor.faculty_id LEFT join branch ON branch.branch_id = advisor.branch_id;";
+        $result2 = mysqli_query($conn, $sql_script2) or die(mysqli_connect_error());
+        $i = 1;
+        ?>
+        <table id="myTable" class="table table-striped">
+            <thead>
+                <tr class="info">
+                    <th width="5%">
+                        <input type="checkbox" id="select_all" class="form-check-input">
+                    </th>
+                    <th width="5%">#</th>
+                    <th>ชื่อ</th>
+                    <th>คณะ/สาขา</th>
+                    <th width="5%">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $i = 1;
+                while ($row_result2 = mysqli_fetch_assoc($result2)) { ?>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox form-check-input" data-ids="<?php echo $row_result2["Advisor_id"]; ?>"></td>
+                        <td><?php echo $i++ ?></td>
+                        <td><?php echo $row_result2["prefix_name"] . "" . $row_result2["Advisor_name1"] . "  " . $row_result2["Advisor_name2"] ?> </td>
+                        <td><?php echo  $row_result2["faculty_name"] . " / " . $row_result2["branch_name"] ?> </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit_Advisor<?php echo $row_result2['Advisor_id'] ?>">
+                                    <i class="bx bx-edit-alt"></i>
+                                </button>
+                                <!-- <a type="button" class="btn btn-warning" href="mgmt_Advisor.php?advisor=edit&id=<?php echo $row_result2['Advisor_id']; ?>">
                                                                         <i class="bx bx-edit-alt"></i>
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-danger delete-advisor" data-id="<?= $row_result2['Advisor_id']; ?>">
-                                                                        <i class="bx bx-trash"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <?php include('./edit_modal.php'); ?>
+                                                                    </a> -->
+                                <button type="button" class="btn btn-danger delete-advisor" data-id="<?= $row_result2['Advisor_id']; ?>">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php include('./edit_modal.php'); ?>
 
-                                                    <?php } ?>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr class="info">
-                                                        <th>#</th>
-                                                        <th>#</th>
-                                                        <th>ชื่อ</th>
-                                                        <th width="5%">Actions</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
+                <?php } ?>
+            </tbody>
+            <tfoot>
+                <tr class="info">
+                    <th>#</th>
+                    <th>#</th>
+                    <th>ชื่อ</th>
+                    <th>คณะ/สาขา</th>
+                    <th width="5%">Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-                                    </div>
+</div>
                                 </div>
                             </div>
 
@@ -104,6 +107,37 @@ $menu = "Advisor";
                                         </div>
                                         <form action="../inc/inc_Advisor.php" method="post" id="add_Advisor">
                                             <div class="modal-body">
+
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label for="exampleFormControlTextarea1" class="form-label">คณะ</label>
+                                                        <select id="faculty" name="faculty_id" class="form-select faculty" required>
+                                                            <option value="">เลือกคณะ</option>
+                                                            <?php
+                                                            // การเชื่อมต่อกับฐานข้อมูล
+                                                            include '../inc/connect.php';
+
+
+                                                            // คิวรี่ข้อมูลคณะจากฐานข้อมูล
+                                                            $sql = "SELECT * FROM faculty";
+                                                            $result = $conn->query($sql);
+
+                                                            // สร้าง dropdown options จากข้อมูลที่ได้
+                                                            while ($row = $result->fetch_assoc()) {
+                                                                echo "<option value='" . $row['faculty_id'] . "'>" . $row['faculty_name'] . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="exampleFormControlTextarea1" class="form-label">สาขาวิชา</label>
+                                                        <select id="branch" name="branch_id" class="form-select branch" required>
+                                                            <option value="">เลือกสาขา</option>
+                                                        </select>
+                                                        
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-12 mb-3 d-grid">
                                                     <div class="input-group">
                                                         <span>
@@ -125,6 +159,8 @@ $menu = "Advisor";
                                                         <input type="text" class="form-control" name="Advisor_name1" placeholder="ชื่อจริง" required>
                                                         <input type="text" class="form-control" name="Advisor_name2" placeholder="นามสกุล" required>
                                                     </div>
+
+
                                                 </div>
 
                                             </div>
@@ -141,87 +177,18 @@ $menu = "Advisor";
                     </div>
                 </div>
 
-                <?php include('./footer.php'); ?>
+                <?php include('./footer.php');
+
+                ?>
 
             </div>
             <div class="layout-overlay layout-menu-toggle"></div>
         </div>
 
-        <?php include('./script.php') ?>
+        <?php
+        include('./script.php')
+        ?>
 
-
-        <script>
-            $("#add_Advisor").submit(function(e) {
-                e.preventDefault();
-                let formUrl = $(this).attr("action");
-                let reqMethod = $(this).attr("method");
-                let formData = new FormData(this);
-
-                // เพิ่มค่าจากปุ่ม submit ที่ถูกคลิก
-                formData.append('add_Advisor', $(document.activeElement).val());
-
-                $.ajax({
-                    url: formUrl,
-                    type: reqMethod,
-                    data: formData,
-                    dataType: 'json',
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        if (data.status === "success") {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'สำเร็จ',
-                                text: data.msg
-                            }).then(function() {
-                                location.reload()
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'ล้มเหลว',
-                                text: data.msg
-                            });
-                        }
-                    }
-                });
-            });
-
-            $(".edit-form-Advisor").submit(function(e) {
-                e.preventDefault();
-                let formUrl = $(this).attr("action");
-                let reqMethod = $(this).attr("method");
-                let formData = new FormData(this);
-                // เพิ่มค่าจากปุ่ม submit ที่ถูกคลิก
-                formData.append($(document.activeElement).attr('edit_Advisor'), $(document.activeElement).val());
-                formData.append('edit_Advisor', $(document.activeElement).val());
-                $.ajax({
-                    url: formUrl,
-                    type: reqMethod,
-                    data: formData,
-                    dataType: 'json',
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        if (data.status == "success") {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'สำเร็จ',
-                                text: data.msg
-                            }).then(function() {
-                                location.reload()
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'ล้มเหลว',
-                                text: data.msg
-                            });
-                        }
-                    }
-                });
-            });
-        </script>
 
 </body>
 

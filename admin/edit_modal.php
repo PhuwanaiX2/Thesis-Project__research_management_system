@@ -195,6 +195,44 @@
               <form method="post" action="../inc/inc_Advisor.php" class="edit-form-Advisor">
                   <div class="modal-body">
                       <input type="hidden" class="form-control" name="Advisor_id" value="<?php echo $row_result2['Advisor_id'] ?>">
+                      <div class="row mb-1">
+                                <?php 
+                                $faculty_id = $row_result2["faculty_id"];
+                                $branch_id = $row_result2["branch_id"];
+                                ?>
+                                <div class="col-6">
+                                    <label for="exampleFormControlTextarea1" class="form-label">คณะ</label>
+                                    <select id="faculty" name="faculty_id" class="form-select faculty" required>
+                                        <option value="">เลือกคณะ</option>
+                                        <?php
+                                        // ดึงรายการคณะจากฐานข้อมูล
+                                        $sql_faculty = "SELECT * FROM faculty";
+                                        $result_faculty = mysqli_query($conn, $sql_faculty) or die(mysqli_connect_error());
+                                        while ($row_faculty = mysqli_fetch_assoc($result_faculty)) {
+                                            $selected = ($row_faculty['faculty_id'] == $faculty_id) ? "selected" : "";
+                                            echo "<option value='" . $row_faculty['faculty_id'] . "' $selected>" . $row_faculty['faculty_name'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="exampleFormControlTextarea1" class="form-label">สาขาวิชา</label>
+                                    <select id="branch" name="branch_id" class="form-select branch" required>
+                                        <option value="">เลือกสาขา</option>
+                                        <?php
+                                        // ดึงรายการสาขาจากฐานข้อมูล
+                                        $sql_branch = "SELECT * FROM branch WHERE faculty_id = '$faculty_id'";
+                                        $result_branch = mysqli_query($conn, $sql_branch) or die(mysqli_connect_error());
+                                        while ($row_branch = mysqli_fetch_assoc($result_branch)) {
+                                            $selected = ($row_branch['branch_id'] == $branch_id) ? "selected" : "";
+                                            echo "<option value='" . $row_branch['branch_id'] . "' $selected>" . $row_branch['branch_name'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                            </div>
                       <div class="col-md-12 mb-3 d-grid">
                           <div class="input-group">
                               <span>
@@ -233,6 +271,8 @@
       </div>
   </div>
 
+
+
   <!-- news -->
   <div class="modal fade modal-lg" id="edit_news<?php echo $row_result2['news_id'] ?>" tabindex="-1" aria-labelledby="sad" aria-hidden="true">
       <div class="modal-dialog">
@@ -259,3 +299,5 @@
           </div>
       </div>
   </div>
+
+ 

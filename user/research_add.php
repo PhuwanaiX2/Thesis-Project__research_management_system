@@ -78,22 +78,39 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
-
-
-                    <div class="col-md-6">
+                <div class="row mb-1">
+                    <div class="col-lg-4 col-lg-4 col-sm-12">
                         <label for="exampleFormControlTextarea1" class="form-label">คณะ</label>
-
-                        <select id="faculty_add" name="faculty_id"  class="form-select" required>
+                        <select id="faculty" name="faculty_id" class="form-select faculty" required>
                             <option value="">เลือกคณะ</option>
+                            <?php
+                            // คิวรี่ข้อมูลคณะจากฐานข้อมูล
+                            $sql = "SELECT * FROM faculty";
+                            $result = $conn->query($sql); 
+
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['faculty_id'] . "'>" . $row['faculty_name'] . "</option>";
+                            }
+                            ?>
                         </select>
                     </div>
-                    <div class="col-md-6">
+
+                    <div class="col-lg-4 col-lg-4 col-sm-12">
                         <label for="exampleFormControlTextarea1" class="form-label">สาขาวิชา</label>
-                        <select id="branch_add" name="branch_id"  class="form-select" required>
+                        <select id="branch" name="branch_id" class="form-select branch" required>
                             <option value="">เลือกสาขา</option>
+
                         </select>
                     </div>
+
+                    <div class="col-lg-4 col-lg-4 col-sm-12">
+                        <label for="exampleFormControlTextarea1" class="form-label">ที่ปรึกษา</label>
+                        <select id="advisor" name="advisor_id" class="form-select advisor" required>
+                            <option value="">เลือกที่ปรึกษา</option>
+                        </select>
+                    </div>
+
+
                 </div>
 
                 <div class="col mb-3">
@@ -108,24 +125,6 @@
                 </div>
 
                 <div class="col-md-12 mb-3">
-                    <div class="col mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">เลือกอาจารย์ที่ปรึกษา</label>
-                        <select id="m_id" name="advisor_id" class="form-select" required>
-                            <?php
-                            // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง type_thesis
-                            $sql = "SELECT Advisor.*,prefix.* FROM Advisor
-                            LEFT join prefix ON prefix.prefix_id = advisor.prefix_id";
-                            $result = $conn->query($sql);
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row["Advisor_id"] . '">' . $row["prefix_name"] . "" . $row["Advisor_name1"] . "  " . $row["Advisor_name2"] . '</option>';
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-
 
                     <div id="show_item" class="mb-3">
 
@@ -171,45 +170,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        // เมื่อหน้าเว็บโหลดเสร็จ
-        loadFaculties();
-
-        // เมื่อเลือกคณะ
-        $('#faculty_add').change(function() {
-            var facultyId = $(this).val();
-            if (facultyId) {
-                loadBranches(facultyId);
-            } else {
-                $('#branch_add').html('<option value="">เลือกสาขา</option>');
-            }
-        });
-    });
-
-    // ฟังก์ชันสำหรับโหลดคณะ
-    function loadFaculties() {
-        $.ajax({
-            url: '../inc/get_faculties.php',
-            type: 'post',
-            success: function(response) {
-                $('#faculty_add').html(response);
-            }
-        });
-    }
-
-    // ฟังก์ชันสำหรับโหลดสาขาตามคณะที่เลือก
-    function loadBranches(facultyId) {
-        $.ajax({
-            url: '../inc/get_branches.php',
-            type: 'post',
-            data: {
-                faculty_id: facultyId
-            },
-            success: function(response) {
-                $('#branch_add').html(response);
-            }
-        });
-    }
-</script>

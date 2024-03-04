@@ -6,6 +6,8 @@ if (isset($_POST['add_Advisor'])) {
     $prefix_id = $_POST['prefix_id'];
     $Advisor_name1 = $_POST['Advisor_name1'];
     $Advisor_name2 = $_POST['Advisor_name2'];
+    $faculty_id = $_POST['faculty_id'];
+    $branch_id = $_POST['branch_id'];
     
     $checkDuplicateSql = "SELECT * 
         FROM Advisor 
@@ -25,12 +27,12 @@ if (isset($_POST['add_Advisor'])) {
         echo json_encode(array("status" => "error", "msg" => "ข้อมูลนี้มีอยู่แล้ว"));
     } else {
          // ไม่มีข้อมูลซ้ำ ทำการเพิ่มข้อมูล
-         $insertQuery = "INSERT INTO Advisor (prefix_id, Advisor_name1, Advisor_name2) VALUES (?, ?, ?)";
+         $insertQuery = "INSERT INTO Advisor (prefix_id, Advisor_name1, Advisor_name2,faculty_id, branch_id) VALUES (?, ?, ?, ?, ?)";
          $insertStmt = mysqli_prepare($conn, $insertQuery);
-         mysqli_stmt_bind_param($insertStmt, "iss",$prefix_id, $Advisor_name1, $Advisor_name2);
+         mysqli_stmt_bind_param($insertStmt, "issii",$prefix_id, $Advisor_name1, $Advisor_name2, $faculty_id, $branch_id);
          mysqli_stmt_execute($insertStmt);
  
-         echo json_encode(array("status" => "success", "msg" => "อาจารย์ที่ปรึกษา"));
+         echo json_encode(array("status" => "success", "msg" => "เพิ่มที่ปรึกษา"));
          exit();
     }
     mysqli_stmt_close($checkStmt);
@@ -42,6 +44,9 @@ if(isset($_POST['edit_Advisor'])){
     $Advisor_name2 = $_POST['Advisor_name2'];
     $Advisor_id =  $_POST['Advisor_id'];
     $prefix_id =  $_POST['prefix_id'];
+    $faculty_id = $_POST['faculty_id'];
+    $branch_id = $_POST['branch_id'];
+    
     $checkDuplicateSql = "SELECT * FROM Advisor  WHERE (?, ?) IN (SELECT Advisor_name1, Advisor_name2 FROM Advisor  WHERE Advisor_id != ? GROUP BY Advisor_name1, Advisor_name2 ) ";
 
     $checkStmt = mysqli_prepare($conn, $checkDuplicateSql);
@@ -54,9 +59,9 @@ if(isset($_POST['edit_Advisor'])){
         echo json_encode(array("status" => "error", "msg" => "ข้อมูลนี้มีอยู่แล้ว "));
     } else {
         // ทำการอัปเดตรหัสผ่านในฐานข้อมูล
-        $updateQuery = "UPDATE Advisor SET prefix_id = ?, Advisor_name1 = ?, Advisor_name2 = ? WHERE Advisor_id = ?";
+        $updateQuery = "UPDATE Advisor SET prefix_id = ?, Advisor_name1 = ?, Advisor_name2 = ?, faculty_id = ?, branch_id = ? WHERE Advisor_id = ?";
         $updateStmt = mysqli_prepare($conn, $updateQuery);
-        mysqli_stmt_bind_param($updateStmt, "issi",$prefix_id, $Advisor_name1, $Advisor_name2, $Advisor_id);
+        mysqli_stmt_bind_param($updateStmt, "issiii",$prefix_id, $Advisor_name1, $Advisor_name2, $faculty_id, $branch_id, $Advisor_id);
         mysqli_stmt_execute($updateStmt);
 
         echo json_encode(array("status" => "success", "msg" => "แก้ไขสำเร็จ"));

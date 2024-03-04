@@ -10,7 +10,7 @@
           <a class="nav-link <?php if ($menu == "index") {echo "active";} ?> " href="./index.php">หน้าหลัก</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php if ($menu == "search") { echo "active"; } ?>" href="./searching.php" >ค้นหาปริญญานิพนธ์</a>
+          <a class="nav-link <?php if ($menu == "search") { echo "active"; } ?>" href="./index.php" >ค้นหาปริญญานิพนธ์</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php if ($menu == "news") {echo "active";} ?>" href="./news.php" ">ข่าวประชาสัมพันธ์</a>

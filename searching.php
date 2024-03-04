@@ -93,7 +93,7 @@ prefix.prefix_id,
 prefix.prefix_name,
 COUNT(author.author_id) AS num_authors,
 GROUP_CONCAT( CONCAT(author.author_name1, ' ', author.author_name2) SEPARATOR ' / ') AS author_full_names,
-CONCAT('อาจารย์ ',prefix.prefix_name,'', Advisor.Advisor_name1, ' ', Advisor.Advisor_name2) AS Advisor_full_name,
+CONCAT('ที่ปรึกษา ',prefix.prefix_name,'', Advisor.Advisor_name1, ' ', Advisor.Advisor_name2) AS Advisor_full_name,
 CONCAT('คณะ',faculty.faculty_name, 'สาขา', branch.branch_name) AS Agency
   FROM 
       thesis      
@@ -229,7 +229,7 @@ $result_search = mysqli_query($conn, $sql_search);
                                 $selected = ($row2["Advisor_id"] == $_REQUEST["advisor"]) ? "selected" : "";
                             ?>
                                 <option value="<?php echo $row2["Advisor_id"]; ?>" <?php echo $selected; ?>>
-                                  <?php echo "อาจารย์ ", $row2["prefix_name"] . "" . $row2["Advisor_name1"] . " " . $row2["Advisor_name2"]; ?>
+                                  <?php echo "ที่ปรึกษา ", $row2["prefix_name"] . "" . $row2["Advisor_name1"] . " " . $row2["Advisor_name2"]; ?>
                                 </option>
                             <?php
                               }

@@ -38,7 +38,7 @@
 <script src="../js/type_research.js"></script> <!--type_research-->
 <script src="../js/news.js"></script> <!--type_research-->
 <script src="../js/thesis.js"></script> 
-<!-- <script src="../js/ayo.js"></script>  -->
+<script src="../js/ayo.js"></script> 
 <script src="../js/members.js"></script> 
 <script src="../js/prefix.js"></script> 
 <script src="../js/branch.js"></script> 

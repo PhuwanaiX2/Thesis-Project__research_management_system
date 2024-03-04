@@ -215,7 +215,7 @@ $result_search = mysqli_query($conn, $sql_search);
                           </select>
                         </div>
 
-                        <div class="col-lg-3 col-sm-12 mb-3">
+                        <!-- <div class="col-lg-3 col-sm-12 mb-3">
                           <label class="form-label" for="inputGroupSelect01">ที่ปรึกษา</label>
                           <select name="advisor" class="form-select">
                             <option selected value="">เลือกทั้งหมด</option>
@@ -229,18 +229,18 @@ $result_search = mysqli_query($conn, $sql_search);
                                 $selected = ($row2["Advisor_id"] == $_REQUEST["advisor"]) ? "selected" : "";
                             ?>
                                 <option value="<?php echo $row2["Advisor_id"]; ?>" <?php echo $selected; ?>>
-                                  <?php echo "อาจารย์ ", $row2["prefix_name"] . "" . $row2["Advisor_name1"] . " " . $row2["Advisor_name2"]; ?>
+                                  <?php echo "ที่ปรึกษา ", $row2["prefix_name"] . "" . $row2["Advisor_name1"] . " " . $row2["Advisor_name2"]; ?>
                                 </option>
                             <?php
                               }
                             }
                             ?>
                           </select>
-                        </div>
+                        </div> -->
 
                         <div class="col-lg-3 col-sm-12 mb-3">
                           <label class="form-label" for="inputGroupSelect01">คณะ</label>
-                          <select name="faculty" id="faculty" class="form-select">
+                          <select name="faculty" id="faculty" class="form-select faculty-search">
                             <option selected value="">เลือกทั้งหมด</option>
                             <?php
                             $sql_faculty = "SELECT faculty_id, faculty_name FROM faculty";
@@ -257,13 +257,14 @@ $result_search = mysqli_query($conn, $sql_search);
                         </div>
 
                         <div class="col-lg-3 col-sm-12 mb-3">
-                          <label class="form-label" for="inputGroupSelect01">สาขาวิชา</label>
-                          <select name="branch" id="branch" class="form-select">
+                          <label class="form-label" for="inputGroupSelect01">สาขาวิชา <as class="text-danger">*เลือกคณะก่อน</as></label>
+                          <select name="branch" id="branch" class="form-select branch-search">
                             <option value="">เลือกทั้งหมด</option>
                             <?php
                             // โค้ด PHP เพื่อเลือกตัวเลือกสาขาที่ถูกเลือกไว้ก่อนหน้า
                             $selectedBranchId = $_REQUEST['branch'];
-                            $sql_branch = "SELECT branch_id, branch_name FROM branch";
+                            $cleanedFaculty = mysqli_real_escape_string($conn, $_REQUEST['faculty']);
+                            $sql_branch = "SELECT branch_id, branch_name FROM branch WHERE faculty_id = '$cleanedFaculty' ";
                             $result_branch = $conn->query($sql_branch);
 
                             if ($result_branch->num_rows > 0) {
@@ -276,6 +277,27 @@ $result_search = mysqli_query($conn, $sql_search);
                           </select>
                         </div>
 
+                        <div class="col-lg-3 col-sm-12 mb-3">
+                          <label class="form-label" for="inputGroupSelect01">ที่ปรึกษา <as class="text-danger">*เลือกสาขาก่อน</as>  </label>
+                          <select name="advisor" id="advisor" class="form-select advisor-search">
+                            <option value="">เลือกทั้งหมด</option>
+                            <?php
+                            // โค้ด PHP เพื่อเลือกตัวเลือกสาขาที่ถูกเลือกไว้ก่อนหน้า
+                            $selectedAdvisorId = $_REQUEST['advisor'];
+                            $cleanedBranch = mysqli_real_escape_string($conn, $_REQUEST['branch']);
+                            $sql_advisor = "SELECT advisor.Advisor_id,advisor.Advisor_name1,advisor.Advisor_name2,advisor.branch_id,prefix.prefix_name  FROM advisor 
+                            LEFT JOIN prefix ON prefix.prefix_id = advisor.prefix_id WHERE faculty_id = '$cleanedBranch'";
+                            $result_advisor = $conn->query($sql_advisor);
+
+                            if ($result_advisor->num_rows > 0) {
+                              while ($row_advisor = $result_advisor->fetch_assoc()) {
+                                $selected = ($row_advisor["Advisor_id"] == $selectedAdvisorId) ? "selected" : "";
+                                echo "<option value='{$row_advisor["Advisor_id"]}' $selected >{$row_advisor["prefix_name"]}{$row_advisor["Advisor_name1"]} {$row_advisor["Advisor_name2"]}</option>";
+                              }
+                            }
+                            ?>
+                          </select>
+                        </div>
 
                       </div>
                       <div class="text-end">
@@ -317,12 +339,7 @@ $result_search = mysqli_query($conn, $sql_search);
                       ?>
 
                     </tbody>
-                    <tfoot>
-                      <tr>
-                        <th width="5%">#</th>
-                        <th>รายละเอียด</th>
-                      </tr>
-                    </tfoot>
+                    
                   </table>
                 </div>
               </div>

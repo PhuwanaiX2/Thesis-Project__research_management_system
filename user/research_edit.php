@@ -50,10 +50,10 @@
                 $result = mysqli_stmt_get_result($select_stmt);
 
                 if (mysqli_num_rows($result) > 0) {
-                  
+
                     $row = mysqli_fetch_assoc($result);
 
-                 
+
         ?>
 
 
@@ -78,7 +78,7 @@
 
                             <div class="col mb-1">
                                 <label class="form-label" for="formValidationBio">บทคัดย่อ</label>
-                                <textarea class="form-control" id="formValidationBio" name="thesis_des" rows="10"><?php echo $row['thesis_des']?></textarea>
+                                <textarea class="form-control" id="formValidationBio" name="thesis_des" rows="15"><?php echo $row['thesis_des'] ?></textarea>
                             </div>
                             <div class="row mb-1">
                                 <div class="col-6">
@@ -126,12 +126,15 @@
                             </div>
 
                             <div class="row mb-1">
-                            <?php $faculty_id = $row["faculty_id"];
-                                        $branch_id = $row["branch_id"];
-                                        ?>
-                                <div class="col-6">
+                                <?php
+                                $faculty_id = $row["faculty_id"];
+                                $branch_id = $row["branch_id"];
+                                $Advisor_id = $row["advisor_id"];
+                                ?>
+
+                                <div class="col-lg-4 col-lg-4 col-sm-12">
                                     <label for="exampleFormControlTextarea1" class="form-label">คณะ</label>
-                                   <select id="faculty_edit" name="faculty_id" class="form-select">
+                                    <select id="faculty" name="faculty_id" class="form-select faculty" required>
                                         <option value="">เลือกคณะ</option>
                                         <?php
                                         // ดึงรายการคณะจากฐานข้อมูล
@@ -145,13 +148,12 @@
                                     </select>
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-lg-4 col-lg-4 col-sm-12">
                                     <label for="exampleFormControlTextarea1" class="form-label">สาขาวิชา</label>
-                                    <select id="branch_edit" name="branch_id" class="form-select">
+                                    <select id="branch" name="branch_id" class="form-select branch" required>
                                         <option value="">เลือกสาขา</option>
                                         <?php
                                         // ดึงรายการสาขาจากฐานข้อมูล
-                                        
                                         $sql_branch = "SELECT * FROM branch WHERE faculty_id = '$faculty_id'";
                                         $result_branch = mysqli_query($conn, $sql_branch) or die(mysqli_connect_error());
                                         while ($row_branch = mysqli_fetch_assoc($result_branch)) {
@@ -161,6 +163,35 @@
                                         ?>
                                     </select>
                                 </div>
+
+                                <div class="col-lg-4 col-lg-4 col-sm-12">
+                                    <label for="exampleFormControlTextarea1" class="form-label">ที่ปรึกษา</label>
+                                    <select id="advisor" name="advisor_id" class="form-select advisor" required>
+                                        <option value="">เลือกที่ปรึกษา</option>
+                                        <?php
+                                        // ดึงรายการสาขาจากฐานข้อมูล
+                                        $sql_advisor = "SELECT advisor.Advisor_id,prefix.prefix_name,advisor.Advisor_name1,advisor.Advisor_name2,advisor.branch_id FROM advisor LEFT JOIN prefix ON prefix.prefix_id = advisor.prefix_id WHERE branch_id = '$branch_id'";
+                                        $result_advisor = mysqli_query($conn, $sql_advisor) or die(mysqli_connect_error());
+
+                                        while ($row_advisor = mysqli_fetch_assoc($result_advisor)) {
+                                            $selected = ($row_advisor['Advisor_id'] == $Advisor_id) ? "selected" : "";
+                                            echo "<option value='"  .$row_advisor['Advisor_id'] . "' $selected>" .$row_advisor['prefix_name']   . $row_advisor['Advisor_name1'] .  " ". $row_advisor['Advisor_name2'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+
+
+
+
+
+
+
 
                             </div>
 
@@ -172,41 +203,18 @@
                             <div class="col mb-1">
                                 <label for="formValidationFile" class="form-label">ไฟล์ปริญญานิพนธ์</label>
                                 <input class="form-control" type="file" id="formFileMultiple" accept=".pdf" name="file_1">
-                                <?php if(!empty($row['thesis_file'])){
-                                    ?>
-                                         <p class="mt-1">สามารถอัพโหลดไฟล์หากต้องการเปลี่ยน <a href="../uploads/<?php echo $row['thesis_file'] ?>" download>ไฟล์ปริญญานิพนธ์</a></p>
-                                    <?php
-                                }else{ ?>
-                                        <p class="mt-1 text-danger">กรุณาอัพโหลดไฟล์</p>
-                                    <?php
+                                <?php if (!empty($row['thesis_file'])) {
+                                ?>
+                                    <p class="mt-1">สามารถอัพโหลดไฟล์หากต้องการเปลี่ยน <a href="../uploads/<?php echo $row['thesis_file'] ?>" download>ไฟล์ปริญญานิพนธ์</a></p>
+                                <?php
+                                } else { ?>
+                                    <p class="mt-1 text-danger">กรุณาอัพโหลดไฟล์</p>
+                                <?php
                                 } ?>
-                               
+
                             </div>
 
-                            <div class="col-md-12 mb-1">
-                                <div class="col mb-1">
-                                    <label for="exampleFormControlTextarea1" class="form-label">เลือกประเภทปริญญานิพนธ์</label>
-                                    <select id="typethesis_id" name="advisor_id" class="form-select" required>
-                                        <?php
-                                        // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง type_thesis
-                                        $sql3 = "SELECT Advisor.*,prefix.* FROM Advisor
-                                        LEFT join prefix ON prefix.prefix_id = advisor.prefix_id";
-                                        $result3 = $conn->query($sql3);
 
-                                        if ($result3->num_rows > 0) {
-                                            while ($row3 = $result3->fetch_assoc()) {
-                                                $selected = ($row3["Advisor_id"] == $row["advisor_id"]) ? "selected" : "";
-                                        ?>
-                                                <option value="<?php echo $row3["Advisor_id"]; ?>" <?php echo $selected; ?>>
-                                                    <?php echo $row3["prefix_name"], $row3["Advisor_name1"] . " " . $row3["Advisor_name2"]; ?>
-                                                </option>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="col-md-12">
                                 <div id="show_item" class="mb-3">
@@ -282,7 +290,7 @@
                                 </div>
                             </div>
 
-                          
+
                         </div><!-- body -->
 
                         <div class="modal-footer">
@@ -311,49 +319,3 @@
 
     </div>
 </div>
-
-
-<script>
-    $(document).ready(function() {
-        // เมื่อหน้าเว็บโหลดเสร็จ
-        loadBranches(<?php echo $faculty_id; ?>, <?php echo $branch_id; ?>);
-
-        // เมื่อเลือกคณะ
-        $('#faculty_edit').change(function() {
-            var facultyId = $(this).val();
-            if (facultyId) {
-                loadBranches(facultyId);
-            } else {
-                $('#branch_edit').html('<option value="">เลือกสาขา</option>');
-            }
-        });
-    });
-
-    // ฟังก์ชันสำหรับโหลดสาขาตามคณะที่เลือก
-    function loadBranches(facultyId, selectedBranchId = null) {
-        $.ajax({
-            url: '../inc/get_branches.php',
-            type: 'post',
-            data: {
-                faculty_id: facultyId
-            },
-            success: function(response) {
-                $('#branch_edit').html(response);
-                if (selectedBranchId) {
-                    $('#branch_edit').val(selectedBranchId);
-                }
-            }
-        });
-    }
-
-    // ฟังก์ชันสำหรับโหลดคณะ
-    function loadFaculties() {
-        $.ajax({
-            url: '../inc/get_faculties.php',
-            type: 'post',
-            success: function(response) {
-                $('#faculty_edit').html(response);
-            }
-        });
-    }
-</script>
