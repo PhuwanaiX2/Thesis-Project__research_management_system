@@ -37,7 +37,7 @@
                               <td><?php echo $row_result2["typethesis_name"] ?> </td>
                               <td>
                                 <div class="btn-group btn-group-sm" role="group" aria-label="Second group">
-                                  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit_typethesis<?php echo $row_result2['typethesis_id'] ?>">
+                                  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit_type<?php echo $row_result2['typethesis_id'] ?>">
                                     <i class="bx bx-edit-alt"></i>
                                   </button>
                                   <button type="button" class="btn btn-danger delete-type" data-id="<?= $row_result2['typethesis_id']; ?>">

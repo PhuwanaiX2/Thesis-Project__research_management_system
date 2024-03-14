@@ -76,7 +76,7 @@
                 </li>
                 <li class="menu-item <?php if ($menu == "change") { echo "active"; } ?> ">
                     <a href="mgmt_profile.php?profile=change" class="menu-link">
-                        <div data-i18n="Analytics">ปริญญานิพนธ์ที่รอยืนยัน</div>
+                        <div data-i18n="Analytics">เปลี่ยนรหัสผ่าน</div>
                     </a>
                 </li>
             </ul>
